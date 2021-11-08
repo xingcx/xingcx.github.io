@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style type="text/css">
+  
+	.node {
+    cursor: pointer;
+  }
+
+  .overlay{
+      background-color:#EEE;
+  }
+   
+  .node circle {
+    fill: #fff;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+  }
+   
+  .node text {
+    font-size:10px; 
+    font-family:sans-serif;
+  }
+   
+  .link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 1.5px;
+  }
+
+  .templink {
+    fill: none;
+    stroke: red;
+    stroke-width: 3px;
+  }
+
+  .ghostCircle.show{
+      display:block;
+  }
+
+  .ghostCircle, .activeDrag .ghostCircle{
+       display: none;
+  }
+
+  /* added XC */
+  #search {
+    width: 60%;
+  }
+  .found {
+    fill: #ff4136;
+    stroke: #ff4136;
+  }
+
+</style>
+<head>
+    <!-- This will be attached to select2, only static element on the page -->
+  <!-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"></link> copied from search tree map -->
+  <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> copied from search tree map -->
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
+  <!-- https://stackoverflow.com/questions/20034522/select2-is-not-a-function -->
+</head>
+
+<body>
+    <h2>Search</h2>
+    <select id="search"></select>
+    <br></br>
+    <div id="tree-container"></div>
+</body>
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script src="dndTree.js"></script>
+
+<!-- to search through a tree, copied from https://bl.ocks.org/jjzieve/a743242f46321491a950 -->
+<script type="text/javascript">
+
+	// //basically a way to get the path to an object
+	// function searchTree(obj,search,path){
+	// 	if(obj.name === search){ //if search is found return, add the object to the path and return it
+	// 		path.push(obj);
+	// 		return path;
+	// 	}
+	// 	else if(obj.children || obj._children){ //if children are collapsed d3 object will have them instantiated as _children
+	// 		var children = (obj.children) ? obj.children : obj._children;
+	// 		for(var i=0;i<children.length;i++){
+	// 			path.push(obj);// we assume this path is the right one
+	// 			var found = searchTree(children[i],search,path);
+	// 			if(found){// we were right, this should return the bubbled-up path from the first if statement
+	// 				return found;
+	// 			}
+	// 			else{//we were wrong, remove this parent from the path and continue iterating
+	// 				path.pop();
+	// 			}
+	// 		}
+	// 	}
+	// 	else{//not the right object, return false so it will continue to iterate in the loop
+	// 		return false;
+	// 	}
+	// }
+  // function extract_select2_data(node,leaves,index){
+	//         if (node.children){
+	//             for(var i = 0;i<node.children.length;i++){
+	//                 index = extract_select2_data(node.children[i],leaves,index)[0];
+	//             }
+	//         }
+	//         else {
+	//             leaves.push({id:++index,text:node.name});
+	//         }
+	//         return [index,leaves];
+	// }
+	// var i = 0,
+	// 	duration = 750,
+	// 	root,
+	// 	select2_data;
+
+  function openPaths(paths){
+		for(var i =0;i<paths.length;i++){
+			if(paths[i].id !== "1"){//i.e. not root
+				paths[i].class = 'found';
+				if(paths[i]._children){ //if children are hidden: open them, otherwise: don't do anything
+					paths[i].children = paths[i]._children;
+	    			paths[i]._children = null;
+				}
+				update(paths[i]);
+			}
+		}
+	}
+  // //init search box
+  // select2_data = extract_select2_data(values,[],0)[1];//I know, not the prettiest...
+  // $("#search").select2({
+  //     data: select2_data,
+  //     containerCssClass: "search"
+  // });
+  // //attach search box listener
+  // $("#search").on("select2-selecting", function(e) {
+  //   var paths = searchTree(root,e.object.text,[]);
+  //   if(typeof(paths) !== "undefined"){
+  //       openPaths(paths);
+  //   }
+  //   else{
+  //       alert(e.object.text+" not found!");
+  //   }
+  // })
+  
+  // d3.select(self.frameElement).style("height", "800px");	
+</script>
+</html>

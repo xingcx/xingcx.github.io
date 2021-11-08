@@ -703,9 +703,6 @@ treeJSON = d3.json("flare_test.json", function(error, treeData) {
 			})
 			.remove();
 
-
-
-
 	}
 
     //init search box

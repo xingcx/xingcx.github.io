@@ -1,3 +1,3 @@
 # xingcx.github.io
 graph link:
-[xingcx.github.io](xingcx.github.io)
+[https://xingcx.github.io](xingcx.github.io)
